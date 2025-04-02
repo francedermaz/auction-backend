@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import { increaseReputation } from "../services/reputationService";
 
 const prisma = new PrismaClient();
 
@@ -101,6 +102,46 @@ export const getAuctionsByUser = async (
 
     res.json(auctions);
   } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// POST /api/auctions/:id/confirm-delivery
+export const confirmDelivery = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const id = parseInt(req.params.id);
+  const { wallet } = req.body;
+
+  try {
+    const auction = await prisma.auction.findUnique({
+      where: { id },
+      include: { user: true },
+    });
+
+    if (!auction) {
+      res.status(404).json({ error: "Auction not found" });
+      return;
+    }
+
+    if (auction.seller !== wallet) {
+      res.status(403).json({ error: "Only buyer can confirm delivery" });
+      return;
+    }
+
+    await prisma.auction.update({
+      where: { id },
+      data: { deliveryConfirmed: true },
+    });
+
+    if (auction.user) {
+      await increaseReputation(auction.user.wallet, 10);
+    }
+
+    res.json({ message: "Delivery confirmed and reputation updated." });
+  } catch (error) {
+    console.error("Error confirming delivery:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
