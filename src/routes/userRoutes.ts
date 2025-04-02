@@ -7,8 +7,8 @@ import {
 
 const router = Router();
 
-router.post("/users", createUser);
-router.get("/users/:wallet", getUserByWallet);
-router.patch("/users/:wallet/reputation", updateReputation);
+router.post("/", createUser);
+router.get("/:wallet", getUserByWallet);
+router.patch("/:wallet/reputation", updateReputation);
 
 export default router;

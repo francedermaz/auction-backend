@@ -4,12 +4,18 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // POST /api/users
-export const createUser = async (req: Request, res: Response) => {
+export const createUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { wallet } = req.body;
 
   try {
     const existing = await prisma.user.findUnique({ where: { wallet } });
-    if (existing) res.status(200).json(existing);
+    if (existing) {
+      res.status(200).json(existing);
+      return;
+    }
 
     const user = await prisma.user.create({
       data: { wallet },
@@ -23,13 +29,19 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 // GET /api/users/:wallet
-export const getUserByWallet = async (req: Request, res: Response) => {
+export const getUserByWallet = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const wallet = req.params.wallet;
 
   try {
     const user = await prisma.user.findUnique({ where: { wallet } });
 
-    if (!user) res.status(404).json({ error: "User not found" });
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
 
     res.json(user);
   } catch (error) {
@@ -38,7 +50,10 @@ export const getUserByWallet = async (req: Request, res: Response) => {
 };
 
 // PATCH /api/users/:wallet/reputation
-export const updateReputation = async (req: Request, res: Response) => {
+export const updateReputation = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const wallet = req.params.wallet;
   const { reputation } = req.body;
 

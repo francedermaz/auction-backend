@@ -3,12 +3,14 @@ import {
   createAuction,
   getAllAuctions,
   getAuctionById,
+  getAuctionsByUser,
 } from "../controllers/auctionController";
 
 const router = Router();
 
-router.post("/auctions", createAuction);
-router.get("/auctions", getAllAuctions);
-router.get("/auctions/:id", getAuctionById);
+router.post("/", createAuction);
+router.get("/", getAllAuctions);
+router.get("/:id", getAuctionById);
+router.get("/user/:wallet", getAuctionsByUser);
 
 export default router;
