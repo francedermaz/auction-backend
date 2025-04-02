@@ -13,12 +13,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id         Int       @id @default(autoincrement())
+  wallet     String    @unique
+  reputation Int       @default(0)
+  createdAt  DateTime  @default(now())
+  auctions   Auction[]
+}
+
 model Auction {
   id          Int      @id @default(autoincrement())
   auctionId   Int      @unique
   title       String
   description String
   imageUrl    String
-  seller      String   // Wallet address
+  seller      String
   createdAt   DateTime @default(now())
+  userId      Int?
+  user        User?    @relation(fields: [userId], references: [id])
 }
