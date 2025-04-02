@@ -16,7 +16,7 @@ export const checkReputation = async (
   try {
     const user = await prisma.user.findUnique({
       where: { wallet: seller },
-      include: { auctions: true }, // traer subastas para contarlas
+      include: { auctions: true },
     });
 
     if (!user) {
@@ -24,7 +24,6 @@ export const checkReputation = async (
       return;
     }
 
-    // ✅ Si tiene reputación suficiente, pasa
     if (user.reputation >= REPUTATION_THRESHOLD) {
       next();
       return;
@@ -32,13 +31,11 @@ export const checkReputation = async (
 
     const publishedAuctions = user.auctions.length;
 
-    // ✅ Si es nuevo y no publicó ninguna, permitimos la primera
     if (publishedAuctions === 0) {
       next();
       return;
     }
 
-    // ❌ Tiene baja reputación y ya publicó al menos una
     res.status(403).json({
       error:
         "Low reputation. You must gain reputation before creating more auctions.",
