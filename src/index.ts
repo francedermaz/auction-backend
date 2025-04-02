@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import auctionRoutes from "./routes/auctionRoutes";
+import userRoutes from "./routes/userRoutes";
 import { Request, Response } from "express";
 
 dotenv.config();
@@ -11,6 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api", auctionRoutes);
+app.use("/api", userRoutes);
 
 app.get("/", (_req: Request, res: Response) => {
   res.send("API Online 🚀");
