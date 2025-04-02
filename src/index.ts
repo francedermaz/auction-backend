@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import auctionRoutes from "./routes/auctionRoutes";
 import userRoutes from "./routes/userRoutes";
+import bidRoutes from "./routes/bidRoutes";
 import { Request, Response } from "express";
 
 dotenv.config();
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use("/api/auctions", auctionRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/bids", bidRoutes);
 
 app.get("/", (_req: Request, res: Response) => {
   res.send("API Online 🚀");
