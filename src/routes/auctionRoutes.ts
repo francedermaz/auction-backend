@@ -5,10 +5,11 @@ import {
   getAuctionById,
   getAuctionsByUser,
 } from "../controllers/auctionController";
+import { checkReputation } from "../middlewares/checkReputation";
 
 const router = Router();
 
-router.post("/", createAuction);
+router.post("/", checkReputation, createAuction);
 router.get("/", getAllAuctions);
 router.get("/:id", getAuctionById);
 router.get("/user/:wallet", getAuctionsByUser);
