@@ -33,14 +33,16 @@ model User {
 }
 
 model Auction {
-  id          Int      @id @default(autoincrement())
-  auctionId   Int      @unique
-  title       String
-  description String
-  imageUrl    String
-  seller      String
-  createdAt   DateTime @default(now())
-  userId      Int?
-  user        User?    @relation(fields: [userId], references: [id])
-  bids        Bid[]
+  id                 Int      @id @default(autoincrement())
+  auctionId          Int      @unique
+  title              String
+  description        String
+  imageUrl           String
+  seller             String
+  createdAt          DateTime @default(now())
+  ended              Boolean  @default(false)
+  deliveryConfirmed  Boolean  @default(false)
+  userId             Int?
+  user               User?    @relation(fields: [userId], references: [id])
+  bids               Bid[]
 }
