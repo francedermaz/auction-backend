@@ -5,6 +5,7 @@ import auctionRoutes from "./routes/auctionRoutes";
 import userRoutes from "./routes/userRoutes";
 import bidRoutes from "./routes/bidRoutes";
 import { Request, Response } from "express";
+import "./eth/auctionListener";
 
 dotenv.config();
 
