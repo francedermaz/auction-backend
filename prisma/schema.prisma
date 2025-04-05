@@ -26,7 +26,6 @@ model Bid {
 model User {
   id         Int       @id @default(autoincrement())
   wallet     String    @unique
-  reputation Int       @default(0)
   createdAt  DateTime  @default(now())
   auctions   Auction[]
   bids       Bid[]
