@@ -7,6 +7,7 @@ import bidRoutes from "./routes/bidRoutes";
 import disputeRoutes from "./routes/disputeRoutes";
 import { Request, Response } from "express";
 import "./eth/auctionListener";
+import "./eth/disputeListener";
 
 dotenv.config();
 
