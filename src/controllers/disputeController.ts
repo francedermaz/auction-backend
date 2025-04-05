@@ -4,7 +4,10 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // POST /api/disputes
-export const createDispute = async (req: Request, res: Response): Promise<void> => {
+export const createDispute = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { disputeId, auctionId, buyer, reason } = req.body;
 
   try {
@@ -31,7 +34,10 @@ export const createDispute = async (req: Request, res: Response): Promise<void> 
 };
 
 // GET /api/disputes
-export const getAllDisputes = async (_req: Request, res: Response): Promise<void> => {
+export const getAllDisputes = async (
+  _req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const disputes = await prisma.dispute.findMany({
       orderBy: { createdAt: "desc" },
@@ -40,27 +46,6 @@ export const getAllDisputes = async (_req: Request, res: Response): Promise<void
     res.json(disputes);
   } catch (error) {
     console.error("Error fetching disputes:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-// PATCH /api/disputes/:id
-export const resolveDispute = async (req: Request, res: Response): Promise<void> => {
-  const disputeId = parseInt(req.params.id);
-  const { favorBuyer } = req.body;
-
-  try {
-    const updated = await prisma.dispute.update({
-      where: { disputeId },
-      data: {
-        resolved: true,
-        favorBuyer,
-      },
-    });
-
-    res.json(updated);
-  } catch (error) {
-    console.error("Error resolving dispute:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

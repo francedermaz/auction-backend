@@ -59,13 +59,3 @@ contract.on("DisputeResolved", async (disputeId, favorBuyer) => {
     console.error("❌ Error updating dispute:", error);
   }
 });
-
-export const authorizeVoter = async (wallet: string) => {
-  try {
-    const tx = await contract.authorizeVoter(wallet);
-    console.log("🔐 Voter authorized:", wallet);
-    await tx.wait();
-  } catch (error) {
-    console.error("Error authorizing voter:", error);
-  }
-};
