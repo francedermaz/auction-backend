@@ -17,7 +17,12 @@ const contract = new ethers.Contract(
 );
 
 contract.on("DisputeOpened", async (disputeId, auctionId, buyer, reason) => {
-  console.log("📩 New Dispute Opened:", { disputeId, auctionId, buyer, reason });
+  console.log("📩 New Dispute Opened:", {
+    disputeId,
+    auctionId,
+    buyer,
+    reason,
+  });
 
   try {
     await prisma.dispute.create({
@@ -28,8 +33,13 @@ contract.on("DisputeOpened", async (disputeId, auctionId, buyer, reason) => {
         reason,
       },
     });
-  } catch (error) {
-    console.error("Error saving dispute:", error);
+    console.log("✅ Dispute saved to DB");
+  } catch (error: any) {
+    if (error.code === "P2002") {
+      console.warn("⚠️ Dispute already exists in DB, skipping insert.");
+    } else {
+      console.error("❌ Error saving dispute:", error);
+    }
   }
 });
 
@@ -44,8 +54,9 @@ contract.on("DisputeResolved", async (disputeId, favorBuyer) => {
         favorBuyer,
       },
     });
+    console.log("✅ Dispute updated in DB");
   } catch (error) {
-    console.error("Error updating dispute:", error);
+    console.error("❌ Error updating dispute:", error);
   }
 });
 
