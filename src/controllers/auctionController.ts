@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { increaseReputation } from "../services/reputationService";
+import { increaseReputationOnChain } from "../services/reputationService";
 
 const prisma = new PrismaClient();
 
@@ -136,7 +136,7 @@ export const confirmDelivery = async (
     });
 
     if (auction.user) {
-      await increaseReputation(auction.user.wallet, 10);
+      await increaseReputationOnChain(auction.user.wallet, 10);
     }
 
     res.json({ message: "Delivery confirmed and reputation updated." });
